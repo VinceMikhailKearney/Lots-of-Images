@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Lots_of_Images" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,11 +21,51 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lma-rZ-CMv">
+                                <rect key="frame" x="0.0" y="72" width="375" height="523"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fea-Lr-AZr">
+                                <rect key="frame" x="16" y="20" width="343" height="35"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72k-nk-8Lv">
+                                <rect key="frame" x="105" y="617" width="165" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Nge-0S-Lh5"/>
+                                    <constraint firstAttribute="width" constant="165" id="gFL-jJ-j2R"/>
+                                </constraints>
+                                <state key="normal" title="Download image"/>
+                                <connections>
+                                    <action selector="downloadImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xvr-jX-l0A"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="fea-Lr-AZr" secondAttribute="bottom" constant="17" id="9nk-jq-rbu"/>
+                            <constraint firstItem="fea-Lr-AZr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Ui0-qJ-Pev"/>
+                            <constraint firstAttribute="trailing" secondItem="lma-rZ-CMv" secondAttribute="trailing" id="ZIZ-k3-PJg"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="72k-nk-8Lv" secondAttribute="bottom" constant="20" id="bYT-mm-dU3"/>
+                            <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="52" id="e8n-7p-hFp"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lma-rZ-CMv" secondAttribute="bottom" constant="72" id="kn1-cf-prX"/>
+                            <constraint firstItem="fea-Lr-AZr" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="oYR-4h-iX4"/>
+                            <constraint firstItem="72k-nk-8Lv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pXv-2i-W3v"/>
+                            <constraint firstItem="fea-Lr-AZr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="vPX-DU-83m"/>
+                            <constraint firstItem="lma-rZ-CMv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="zI8-Rt-7lJ"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="downloadImageButton" destination="72k-nk-8Lv" id="jOi-jn-L4n"/>
+                        <outlet property="imageTitle" destination="fea-Lr-AZr" id="9Ba-vt-bxf"/>
+                        <outlet property="imageView" destination="lma-rZ-CMv" id="1Uu-bh-DqN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-695.20000000000005" y="94.902548725637189"/>
         </scene>
     </scenes>
 </document>

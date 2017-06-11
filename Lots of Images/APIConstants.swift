@@ -29,6 +29,11 @@ class APIConstants : NSObject
         static let ColourGalleryId = "72157679219461630"
     }
     
+    struct Response {
+        static let title = "title"
+        static let imageURL = "url_m"
+    }
+    
     public static func getGalleryPhotosUrl(withId : String) -> URL
     {
         let methodParameters = [
