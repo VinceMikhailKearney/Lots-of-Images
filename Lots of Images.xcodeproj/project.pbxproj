@@ -14,6 +14,7 @@
 		D84E7D881EE9F7EE0036692D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D84E7D861EE9F7EE0036692D /* LaunchScreen.storyboard */; };
 		D84E7D931EE9F7EE0036692D /* Lots_of_ImagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84E7D921EE9F7EE0036692D /* Lots_of_ImagesTests.swift */; };
 		D84E7D9E1EE9F7EE0036692D /* Lots_of_ImagesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84E7D9D1EE9F7EE0036692D /* Lots_of_ImagesUITests.swift */; };
+		D8B0E76D1EEC518E0089FFDD /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B0E76C1EEC518E0089FFDD /* APIConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		D84E7D991EE9F7EE0036692D /* Lots of ImagesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Lots of ImagesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84E7D9D1EE9F7EE0036692D /* Lots_of_ImagesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lots_of_ImagesUITests.swift; sourceTree = "<group>"; };
 		D84E7D9F1EE9F7EE0036692D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8B0E76C1EEC518E0089FFDD /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				D84E7D841EE9F7EE0036692D /* Assets.xcassets */,
 				D84E7D861EE9F7EE0036692D /* LaunchScreen.storyboard */,
 				D84E7D891EE9F7EE0036692D /* Info.plist */,
+				D8B0E76C1EEC518E0089FFDD /* APIConstants.swift */,
 			);
 			path = "Lots of Images";
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			files = (
 				D84E7D801EE9F7EE0036692D /* ViewController.swift in Sources */,
 				D84E7D7E1EE9F7EE0036692D /* AppDelegate.swift in Sources */,
+				D8B0E76D1EEC518E0089FFDD /* APIConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +518,7 @@
 				D84E7DA41EE9F7EE0036692D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D84E7DA51EE9F7EE0036692D /* Build configuration list for PBXNativeTarget "Lots of ImagesTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +527,7 @@
 				D84E7DA71EE9F7EE0036692D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D84E7DA81EE9F7EE0036692D /* Build configuration list for PBXNativeTarget "Lots of ImagesUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +536,7 @@
 				D84E7DAA1EE9F7EE0036692D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
