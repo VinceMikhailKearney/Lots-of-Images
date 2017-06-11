@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol APIServiceDelegate {
-    func download(image : Data, title : String)
+    func downloaded(image : Data, title : String)
 }
 
 class APIService: NSObject
@@ -81,7 +81,7 @@ class APIService: NSObject
             {
                 print("Before we should be throwing the delegate call\nGot image with title -> \(imageTitle)\nThe delegate is nil? \(self.delegates == nil ? "Yes" : "No")")
                 DispatchQueue.main.async {
-                    self.delegates?.invokeDelegates { delegates in delegates.download(image: imageData, title: imageTitle) }
+                    self.delegates?.invokeDelegates { delegates in delegates.downloaded(image: imageData, title: imageTitle) }
                 }
             } else {
                 print("Seems that no image exists at this URL!")

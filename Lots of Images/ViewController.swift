@@ -24,7 +24,7 @@ class ViewController: UIViewController, APIServiceDelegate
     }
     
     // MARK: APIService Delegate methods
-    func download(image: Data, title: String)
+    func downloaded(image: Data, title: String)
     {
         print("Got a delegate callback from downloading an image")
         self.imageView.image = UIImage(data: image)

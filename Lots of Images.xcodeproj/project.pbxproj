@@ -103,15 +103,15 @@
 		D84E7D7C1EE9F7EE0036692D /* Lots of Images */ = {
 			isa = PBXGroup;
 			children = (
-				D8B0E7701EEDFACF0089FFDD /* MulticastDelegate.swift */,
 				D84E7D7D1EE9F7EE0036692D /* AppDelegate.swift */,
+				D8B0E76E1EEDF8CB0089FFDD /* APIService.swift */,
+				D8B0E76C1EEC518E0089FFDD /* APIConstants.swift */,
+				D8B0E7701EEDFACF0089FFDD /* MulticastDelegate.swift */,
 				D84E7D7F1EE9F7EE0036692D /* ViewController.swift */,
 				D84E7D811EE9F7EE0036692D /* Main.storyboard */,
 				D84E7D841EE9F7EE0036692D /* Assets.xcassets */,
 				D84E7D861EE9F7EE0036692D /* LaunchScreen.storyboard */,
 				D84E7D891EE9F7EE0036692D /* Info.plist */,
-				D8B0E76C1EEC518E0089FFDD /* APIConstants.swift */,
-				D8B0E76E1EEDF8CB0089FFDD /* APIService.swift */,
 			);
 			path = "Lots of Images";
 			sourceTree = "<group>";
