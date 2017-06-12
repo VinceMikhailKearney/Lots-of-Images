@@ -10,6 +10,7 @@ import UIKit
 
 public protocol APIServiceDelegate {
     func downloadedImages()
+    func updateToastProgress(_ progress : Float)
 }
 
 class APIService: NSObject
@@ -66,8 +67,12 @@ class APIService: NSObject
                 return
             }
             
-            print("Total images are -> \(photosDictionary["total"] ?? "Did not find key 'total'" as AnyObject)")
+            guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
+            print("Total images are -> \(totalImageCount)")
+            let percent = (1.00 / Float(totalImageCount))
+            print("Each image is \(percent * 100)%")
             
+            var totalPercent = percent
             for dictionary in photosArray
             {
                 guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
@@ -80,6 +85,10 @@ class APIService: NSObject
                 {
                     let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
                     Gallery.sharedInstance().addPhoto(newPhoto)
+                    
+                    DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent)) } }
+                    totalPercent += percent
+                    
                     if Gallery.sharedInstance().galleryPhotoCount() == (photosDictionary["total"] as? Int) {
                         DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
                     }

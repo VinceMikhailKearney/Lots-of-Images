@@ -17,6 +17,7 @@ class ViewController: UIViewController, APIServiceDelegate
     @IBOutlet weak var nextImageButton : UIButton!
     @IBOutlet weak var previousImageButton : UIButton!
     private var imagePosition : Int?
+    private var progressHUD : MBProgressHUD?
     
     override func viewDidLoad()
     {
@@ -34,9 +35,9 @@ class ViewController: UIViewController, APIServiceDelegate
     }
     
     func displayToast() {
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.mode = .indeterminate
-        hud.label.text = "Downloading images"
+        progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        progressHUD?.mode = .annularDeterminate
+        progressHUD?.label.text = "Downloading images"
     }
     
     // MARK: APIService Delegate methods
@@ -48,6 +49,11 @@ class ViewController: UIViewController, APIServiceDelegate
         self.previousImageButton.isHidden = false
         self.nextImageButton.isHidden = false
         self.updateImage(Gallery.sharedInstance().images()[self.imagePosition!])
+    }
+    
+    func updateToastProgress(_ progress: Float) {
+        print("Should be updating the progress of the HUD. This is the progress -> \(progress)")
+        progressHUD?.progress = progress
     }
     
     // MARK: Actions
