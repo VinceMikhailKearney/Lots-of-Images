@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol APIServiceDelegate {
-    func downloaded(image : Data, title : String)
+    func downloadedImages()
 }
 
 class APIService: NSObject
@@ -68,23 +68,28 @@ class APIService: NSObject
             
             print("Total images are -> \(photosDictionary["total"] ?? "Did not find key 'total'" as AnyObject)")
             
-            let randomIndex = Int(arc4random_uniform(UInt32(photosArray.count)))
-            let chosenPhoto = photosArray[randomIndex]
+//            let randomIndex = Int(arc4random_uniform(UInt32(photosArray.count)))
+//            let chosenPhoto = photosArray[randomIndex]
             
-            guard let imageUrlString = chosenPhoto[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
-            
-            guard let imageTitle = chosenPhoto[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
-            
-            print("Have both the URL and title")
-            let imageURL = URL(string: imageUrlString)
-            if let imageData = try? Data(contentsOf: imageURL!)
+            for dictionary in photosArray
             {
-                print("Before we should be throwing the delegate call\nGot image with title -> \(imageTitle)\nThe delegate is nil? \(self.delegates == nil ? "Yes" : "No")")
-                DispatchQueue.main.async {
-                    self.delegates?.invokeDelegates { delegates in delegates.downloaded(image: imageData, title: imageTitle) }
+                guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
+                
+                guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
+                
+                print("Have both the URL and title")
+                let imageURL = URL(string: imageUrlString)
+                if let imageData = try? Data(contentsOf: imageURL!)
+                {
+                    let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
+                    Gallery.sharedInstance().addPhoto(newPhoto)
+                    if Gallery.sharedInstance().galleryPhotoCount() == 16 {
+                        DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
+                    }
                 }
-            } else {
-                print("Seems that no image exists at this URL!")
+                else {
+                    print("Seems that no image exists at this URL!")
+                }
             }
         }
         

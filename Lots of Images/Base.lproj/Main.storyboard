@@ -37,22 +37,48 @@
                                     <constraint firstAttribute="height" constant="30" id="Nge-0S-Lh5"/>
                                     <constraint firstAttribute="width" constant="165" id="gFL-jJ-j2R"/>
                                 </constraints>
-                                <state key="normal" title="Download image"/>
+                                <state key="normal" title="Download images"/>
                                 <connections>
                                     <action selector="downloadImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xvr-jX-l0A"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B7K-0t-bzl">
+                                <rect key="frame" x="299" y="602" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="Jcc-Gj-7U9"/>
+                                    <constraint firstAttribute="height" constant="60" id="gBi-kS-9UP"/>
+                                </constraints>
+                                <state key="normal" image="right"/>
+                                <connections>
+                                    <action selector="nextImageFromGallery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Fh-Yk-fjB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uMa-EM-9o3">
+                                <rect key="frame" x="16" y="602" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Cqs-UP-nI9"/>
+                                    <constraint firstAttribute="width" constant="60" id="hGi-Uc-us4"/>
+                                </constraints>
+                                <state key="normal" image="left"/>
+                                <connections>
+                                    <action selector="previousImageFromGallery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bkF-6k-et3"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="B7K-0t-bzl" secondAttribute="trailing" constant="16" id="69h-JO-xpl"/>
                             <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="fea-Lr-AZr" secondAttribute="bottom" constant="17" id="9nk-jq-rbu"/>
+                            <constraint firstItem="uMa-EM-9o3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="Gyh-KV-UjK"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Ui0-qJ-Pev"/>
                             <constraint firstAttribute="trailing" secondItem="lma-rZ-CMv" secondAttribute="trailing" id="ZIZ-k3-PJg"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="72k-nk-8Lv" secondAttribute="bottom" constant="20" id="bYT-mm-dU3"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uMa-EM-9o3" secondAttribute="bottom" constant="5" id="cXj-Y0-EdY"/>
                             <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="52" id="e8n-7p-hFp"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lma-rZ-CMv" secondAttribute="bottom" constant="72" id="kn1-cf-prX"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="oYR-4h-iX4"/>
                             <constraint firstItem="72k-nk-8Lv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pXv-2i-W3v"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="B7K-0t-bzl" secondAttribute="bottom" constant="5" id="qDe-4r-riR"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="vPX-DU-83m"/>
                             <constraint firstItem="lma-rZ-CMv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="zI8-Rt-7lJ"/>
                         </constraints>
@@ -61,6 +87,8 @@
                         <outlet property="downloadImageButton" destination="72k-nk-8Lv" id="jOi-jn-L4n"/>
                         <outlet property="imageTitle" destination="fea-Lr-AZr" id="9Ba-vt-bxf"/>
                         <outlet property="imageView" destination="lma-rZ-CMv" id="1Uu-bh-DqN"/>
+                        <outlet property="nextImageButton" destination="B7K-0t-bzl" id="oPu-Mi-OOx"/>
+                        <outlet property="previousImageButton" destination="uMa-EM-9o3" id="VRr-k9-Hmb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -68,4 +96,8 @@
             <point key="canvasLocation" x="-695.20000000000005" y="94.902548725637189"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="left" width="128" height="128"/>
+        <image name="right" width="128" height="128"/>
+    </resources>
 </document>
