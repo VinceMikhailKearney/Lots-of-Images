@@ -62,7 +62,7 @@ class ViewController: UIViewController, APIServiceDelegate
         print("Pressed download image button")
         self.displayToast()
         Gallery.sharedInstance().clear() // First clear the gallery that we have before we refill it
-        APIService.sharedInstance().getImagesForGallery(withId: APIConstants.Values.ColourGalleryId)
+        APIService.sharedInstance().getImagesForGallery(withId: APIConstants.Values.ChristmasMarketGalleryID)
         self.view.isUserInteractionEnabled = false
     }
     

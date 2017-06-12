@@ -27,6 +27,7 @@ class APIConstants : NSObject
         static let DisableJSONCallback = "1" // 1 means 'yes'
         static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
         static let ColourGalleryId = "72157679219461630"
+        static let ChristmasMarketGalleryID = "72157673812981594"
     }
     
     struct Response {
