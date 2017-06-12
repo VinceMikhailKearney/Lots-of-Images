@@ -35,6 +35,10 @@ class Gallery: NSObject
         return self.photoList
     }
     
+    public func clear() {
+        self.photoList = Array<Photo>()
+    }
+    
     public func galleryPhotoCount() -> Int {
         return self.photoList.count
     }

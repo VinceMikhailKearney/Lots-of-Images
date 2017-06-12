@@ -28,24 +28,34 @@ class ViewController: UIViewController, APIServiceDelegate
         self.nextImageButton.isHidden = true
     }
     
-    // MARK: APIService Delegate methods
-    func downloadedImages()
-    {
-        print("Got a delegate callback from downloading an image")
-        self.view.isUserInteractionEnabled = true
-        self.previousImageButton.isHidden = false
-        self.nextImageButton.isHidden = false
-        let firstPhoto = Gallery.sharedInstance().images()[self.imagePosition!]
-        self.updateImage(firstPhoto)
-    }
-    
     func updateImage(_ image : Photo) {
         self.imageView.image = UIImage(data: image.imageData!)
         self.imageTitle.text = image.imageTitle!
     }
     
-    @IBAction func downloadImage(_ sender : UIButton) {
+    func displayToast() {
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.mode = .indeterminate
+        hud.label.text = "Downloading images"
+    }
+    
+    // MARK: APIService Delegate methods
+    func downloadedImages()
+    {
+        print("Got a delegate callback from downloading an image")
+        self.view.isUserInteractionEnabled = true
+        MBProgressHUD.hide(for: self.view, animated: true)
+        self.previousImageButton.isHidden = false
+        self.nextImageButton.isHidden = false
+        self.updateImage(Gallery.sharedInstance().images()[self.imagePosition!])
+    }
+    
+    // MARK: Actions
+    @IBAction func downloadImage(_ sender : UIButton)
+    {
         print("Pressed download image button")
+        self.displayToast()
+        Gallery.sharedInstance().clear() // First clear the gallery that we have before we refill it
         APIService.sharedInstance().getImagesForGallery(withId: APIConstants.Values.ColourGalleryId)
         self.view.isUserInteractionEnabled = false
     }

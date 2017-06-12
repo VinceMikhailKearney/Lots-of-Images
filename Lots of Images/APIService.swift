@@ -68,9 +68,6 @@ class APIService: NSObject
             
             print("Total images are -> \(photosDictionary["total"] ?? "Did not find key 'total'" as AnyObject)")
             
-//            let randomIndex = Int(arc4random_uniform(UInt32(photosArray.count)))
-//            let chosenPhoto = photosArray[randomIndex]
-            
             for dictionary in photosArray
             {
                 guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
@@ -83,7 +80,7 @@ class APIService: NSObject
                 {
                     let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
                     Gallery.sharedInstance().addPhoto(newPhoto)
-                    if Gallery.sharedInstance().galleryPhotoCount() == 16 {
+                    if Gallery.sharedInstance().galleryPhotoCount() == (photosDictionary["total"] as? Int) {
                         DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
                     }
                 }
