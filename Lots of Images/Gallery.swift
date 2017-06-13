@@ -11,35 +11,32 @@ import UIKit
 class Gallery: NSObject
 {
     // MARK: Properties
-    private var name : String
+    public var name : String
+    public var identifier : String
+    public var totalImageCount : Int
     private var photoList : Array<Photo>
-    private static var gallery : Gallery?
-    
-    public static func sharedInstance() -> Gallery {
-        if self.gallery == nil {
-            self.gallery = Gallery()
-        }
-        
-        return self.gallery!
-    }
     
     override init()
     {
         self.name = ""
+        self.identifier = ""
+        self.totalImageCount = 0
         self.photoList = Array<Photo>()
     
         super.init()
+    }
+    
+    convenience init(name : String, identifier : String) {
+        self.init()
+        self.name = name
+        self.identifier = identifier
     }
     
     public func images() -> Array<Photo> {
         return self.photoList
     }
     
-    public func clear() {
-        self.photoList = Array<Photo>()
-    }
-    
-    public func galleryPhotoCount() -> Int {
+    public func photoCount() -> Int {
         return self.photoList.count
     }
     

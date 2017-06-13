@@ -18,7 +18,7 @@ class APIService: NSObject
     // MARK: Properties
     private static var service : APIService?
     open var delegates : MulticastDelegate<APIServiceDelegate>?
-    static var totalImages : Int?
+    public static var totalImageCount : Int?
     
     open static func sharedInstance() -> APIService
     {
@@ -33,6 +33,46 @@ class APIService: NSObject
         print("Init APIService")
         super.init()
         delegates = MulticastDelegate()
+    }
+    
+    public func getGalleryInfo(withId id : String)
+    {
+        let request : URLRequest = URLRequest(url: APIConstants.getGalleryInfoUrl(withId: id))
+        
+        /// Task
+        let task = URLSession.shared.dataTask(with: request)
+        { (data, response, error) in
+            
+            guard error == nil else { print("Got an error"); return }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("We received a status code other than 2xx!")
+                return
+            }
+            
+            guard let newData = data else { print("Did not get data"); return }
+            
+            let parsed : [String : AnyObject]!
+            do {
+                parsed = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as! [String : AnyObject]
+            } catch {
+                print("Could not parse the data as JSON: \(newData)")
+                return
+            }
+            
+            guard let status = parsed["stat"] as? String, status == "ok" else { print("Flickr response is NOT ok"); return }
+            
+            guard let gallery = parsed["gallery"] as? [String : AnyObject], let galleryTitle = gallery["title"]?["_content"] as? String else {
+                print("Did not get gallery title")
+                return
+            }
+            
+            Galleries.sharedInstance().addGallery(Gallery.init(name: galleryTitle, identifier: id))
+            APIService.sharedInstance().getImagesForGallery(withId: id)
+        }
+        
+        task.resume()
+        /// Task
     }
     
     public func getImagesForGallery(withId : String)
@@ -69,10 +109,13 @@ class APIService: NSObject
             }
             
             guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
-            APIService.totalImages = totalImageCount
             
-            print("Total images are -> \(APIService.totalImages!)")
-            let percent = (1.00 / Float(APIService.totalImages!))
+            let gallery : Gallery = Galleries.sharedInstance().getGallery(withId: withId)!
+            gallery.totalImageCount = totalImageCount
+            APIService.totalImageCount = totalImageCount
+            
+            print("Total images for gallery (\(gallery.name)) are -> \(gallery.totalImageCount)")
+            let percent = (1.00 / Float(gallery.totalImageCount))
             print("Each image is \(percent * 100)%")
             
             var totalPercent = percent
@@ -87,12 +130,12 @@ class APIService: NSObject
                 if let imageData = try? Data(contentsOf: imageURL!)
                 {
                     let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
-                    Gallery.sharedInstance().addPhoto(newPhoto)
+                    gallery.addPhoto(newPhoto)
                     
                     DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent), imageCount: Int(totalPercent/percent)) } }
                     totalPercent += percent
                     
-                    if Gallery.sharedInstance().galleryPhotoCount() == (photosDictionary["total"] as? Int) {
+                    if gallery.photoCount() == (photosDictionary["total"] as? Int) {
                         DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
                     }
                 }

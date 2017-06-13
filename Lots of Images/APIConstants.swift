@@ -26,6 +26,7 @@ class APIConstants : NSObject
         static let ResponseFormat = "json"
         static let DisableJSONCallback = "1" // 1 means 'yes'
         static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
+        static let GalleryInfoMethod = "flickr.galleries.getInfo"
         static let ColourGalleryId = "72157679219461630"
         static let ChristmasMarketGalleryID = "72157673812981594"
     }
@@ -35,12 +36,20 @@ class APIConstants : NSObject
         static let imageURL = "url_m"
     }
     
-    public static func getGalleryPhotosUrl(withId : String) -> URL
+    public static func getGalleryPhotosUrl(withId : String) -> URL {
+        return APIConstants.getGallery(withMethod: APIConstants.Values.GalleryPhotosMethod, galleryId: withId)
+    }
+    
+    public static func getGalleryInfoUrl(withId : String) -> URL {
+        return APIConstants.getGallery(withMethod: APIConstants.Values.GalleryInfoMethod, galleryId: withId)
+    }
+    
+    public static func getGallery(withMethod method : String, galleryId : String) -> URL
     {
         let methodParameters = [
-            APIConstants.Keys.method : APIConstants.Values.GalleryPhotosMethod,
+            APIConstants.Keys.method : method,
             APIConstants.Keys.API_Key : APIConstants.Values.API_Key,
-            APIConstants.Keys.GalleryID : withId,
+            APIConstants.Keys.GalleryID : galleryId,
             APIConstants.Keys.Extras : "url_m",
             APIConstants.Keys.Format : APIConstants.Values.ResponseFormat,
             APIConstants.Keys.NoJSONCallback : APIConstants.Values.DisableJSONCallback
