@@ -51,9 +51,10 @@ class ViewController: UIViewController, APIServiceDelegate
         self.updateImage(Gallery.sharedInstance().images()[self.imagePosition!])
     }
     
-    func updateToastProgress(_ progress: Float) {
+    func updateToastProgress(_ progress: Float, imageCount : Int) {
         print("Should be updating the progress of the HUD. This is the progress -> \(progress)")
         progressHUD?.progress = progress
+        progressHUD?.detailsLabel.text = "\(imageCount)/\(APIService.totalImages ?? 0)"
     }
     
     // MARK: Actions

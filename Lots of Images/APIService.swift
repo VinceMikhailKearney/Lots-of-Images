@@ -10,7 +10,7 @@ import UIKit
 
 public protocol APIServiceDelegate {
     func downloadedImages()
-    func updateToastProgress(_ progress : Float)
+    func updateToastProgress(_ progress : Float, imageCount : Int)
 }
 
 class APIService: NSObject
@@ -18,6 +18,7 @@ class APIService: NSObject
     // MARK: Properties
     private static var service : APIService?
     open var delegates : MulticastDelegate<APIServiceDelegate>?
+    static var totalImages : Int?
     
     open static func sharedInstance() -> APIService
     {
@@ -68,8 +69,10 @@ class APIService: NSObject
             }
             
             guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
-            print("Total images are -> \(totalImageCount)")
-            let percent = (1.00 / Float(totalImageCount))
+            APIService.totalImages = totalImageCount
+            
+            print("Total images are -> \(APIService.totalImages!)")
+            let percent = (1.00 / Float(APIService.totalImages!))
             print("Each image is \(percent * 100)%")
             
             var totalPercent = percent
@@ -86,7 +89,7 @@ class APIService: NSObject
                     let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
                     Gallery.sharedInstance().addPhoto(newPhoto)
                     
-                    DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent)) } }
+                    DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent), imageCount: Int(totalPercent/percent)) } }
                     totalPercent += percent
                     
                     if Gallery.sharedInstance().galleryPhotoCount() == (photosDictionary["total"] as? Int) {
