@@ -31,6 +31,16 @@ class TableViewController: UIViewController, APIServiceDelegate
         progressHUD?.label.text = "Downloading images"
     }
     
+    func cannotDownloadToast() {
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.mode = .text
+        hud.label.text = "No ID entered"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
+    }
+    
     // MARK: APIServiceDelegate
     func downloadedImages()
     {
@@ -39,6 +49,7 @@ class TableViewController: UIViewController, APIServiceDelegate
         MBProgressHUD.hide(for: self.view, animated: true)
         self.galleries = Galleries.sharedInstance().list
         self.tableView.reloadData()
+        self.textField.text = "" // reset text only if images are downloaded
     }
     
     func updateToastProgress(_ progress: Float, imageCount : Int) {
@@ -51,9 +62,11 @@ class TableViewController: UIViewController, APIServiceDelegate
     @IBAction func downloadImage(_ sender : UIButton)
     {
         print("Pressed download image button")
+        guard (self.textField.text?.characters.count)! > 0 else { self.cannotDownloadToast(); return }
         self.displayToast()
-        APIService.sharedInstance().getGalleryInfo(withId: APIConstants.Values.ChristmasMarketGalleryID)
+        APIService.sharedInstance().getGalleryInfo(withId: self.textField.text!)
         self.view.isUserInteractionEnabled = false
+        self.textField.resignFirstResponder()
     }
 
     // MARK: - Navigation
@@ -77,6 +90,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         self.performSegue(withIdentifier: "showGallery", sender: self.galleries?[indexPath.row])
     }
 }
