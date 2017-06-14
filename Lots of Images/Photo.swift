@@ -13,15 +13,17 @@ class Photo: NSObject
     // MARK: Properties
     public var imageData : Data?
     public var imageTitle : String?
+    public var imageIdentifier : String?
     
     override init() {
         super.init()
     }
     
-    convenience init(withData : Data, title : String) {
+    convenience init(withData : Data, title : String, id : String) {
         self.init()
         
         self.imageData = withData
         self.imageTitle = title
+        self.imageIdentifier = id
     }
 }

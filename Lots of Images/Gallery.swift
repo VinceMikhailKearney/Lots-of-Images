@@ -41,7 +41,10 @@ class Gallery: NSObject
     }
     
     public func addPhoto(_ photo : Photo) {
-        // Need to check if Gallery already contains photo with title or ID? (Func programming playground)
-        self.photoList.append(photo)
+        var filtered = Array<Photo>()
+        filtered = self.photoList.filter { $0.imageIdentifier == photo.imageIdentifier }
+        if filtered.count == 0 {
+            self.photoList.append(photo)
+        }
     }
 }

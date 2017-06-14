@@ -34,6 +34,7 @@ class APIConstants : NSObject
     struct Response {
         static let title = "title"
         static let imageURL = "url_m"
+        static let identifier = "id"
     }
     
     public static func getGalleryPhotosUrl(withId : String) -> URL {

@@ -117,19 +117,19 @@ class APIService: NSObject
             for dictionary in photosArray
             {
                 guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
-                
                 guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
+                guard let imageId = dictionary[APIConstants.Response.identifier] as? String else { print("Could not get image ID"); return}
                 
                 let imageURL = URL(string: imageUrlString)
                 if let imageData = try? Data(contentsOf: imageURL!)
                 {
-                    let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
+                    let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle, id: imageId)
                     gallery.addPhoto(newPhoto)
                     
                     DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent), imageCount: Int(totalPercent/percent)) } }
                     totalPercent += percent
                     
-                    if gallery.photoCount() == (photosDictionary["total"] as? Int) {
+                    if gallery.photoCount() == totalImageCount {
                         DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
                     }
                 }
