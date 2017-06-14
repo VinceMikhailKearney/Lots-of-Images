@@ -20,6 +20,7 @@ extension Dictionary
 public protocol APIServiceDelegate {
     func downloadedImages()
     func updateToastProgress(_ progress : Float, imageCount : Int)
+    func downloadError(reason : String)
 }
 
 class APIService: NSObject
@@ -44,6 +45,11 @@ class APIService: NSObject
         delegates = MulticastDelegate()
     }
     
+    private func gotAnError(reason : String) {
+        print(reason)
+        DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.downloadError(reason: reason) } }
+    }
+    
     private func runDataTask(withUrl url : URL, completion: @escaping (_ result : Dictionary<String, AnyObject>?) -> Void)
     {
         let request : URLRequest = URLRequest(url: url)
@@ -51,24 +57,30 @@ class APIService: NSObject
         let task = URLSession.shared.dataTask(with: request)
         { (data, response, error) in
             
-            guard error == nil else { print("Got an error"); return }
+            var failure = "Got an error in response"
             
+            guard error == nil else { self.gotAnError(reason: failure); return }
+            
+            failure = "We received a status code other than 2xx!"
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("We received a status code other than 2xx!")
+                self.gotAnError(reason: failure)
                 return
             }
             
-            guard let newData = data else { print("Did not get data"); return }
+            failure = "Did not get data"
+            guard let newData = data else { self.gotAnError(reason: failure); return }
             
             let parsed : [String : AnyObject]!
             do {
                 parsed = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as! [String : AnyObject]
             } catch {
-                print("Could not parse the data as JSON: \(newData)")
+                failure = "Could not parse the data as JSON: \(newData)"
+                self.gotAnError(reason: failure)
                 return
             }
             
-            guard let status = parsed["stat"] as? String, status == "ok" else { print("Flickr response is NOT ok"); return }
+            failure = "Flickr response is NOT ok"
+            guard let status = parsed["stat"] as? String, status == "ok" else { self.gotAnError(reason: failure); return }
             
             completion(parsed)
         }
@@ -83,7 +95,7 @@ class APIService: NSObject
         { (result) in
             
             guard let gallery = result?["gallery"] as? [String : AnyObject], let galleryTitle = gallery["title"]?["_content"] as? String else {
-                print("Did not get gallery title")
+                self.gotAnError(reason: "Did not get gallery title")
                 return
             }
             
@@ -99,11 +111,11 @@ class APIService: NSObject
             
             // or [[String : AnyObject]]
             guard let photosDictionary = result?["photos"] as? [String : AnyObject], let photosArray = photosDictionary["photo"] as? Array<Dictionary<String, AnyObject>> else {
-                print("Did not find the keys in the dictionary")
+                self.gotAnError(reason: "Did not find the keys in the dictionary")
                 return
             }
             
-            guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
+            guard let totalImageCount = photosDictionary["total"] as? Int else { self.gotAnError(reason: "Did not get a Total Count"); return }
             
             let gallery : Gallery = Galleries.sharedInstance().getGallery(withId: withId)!
             gallery.totalImageCount = totalImageCount
@@ -116,9 +128,9 @@ class APIService: NSObject
             var totalPercent = percent
             for dictionary in photosArray
             {
-                guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
-                guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
-                guard let imageId = dictionary[APIConstants.Response.identifier] as? String else { print("Could not get image ID"); return}
+                guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { self.gotAnError(reason: "Could not find image url string"); return }
+                guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { self.gotAnError(reason: "Could not find image title"); return }
+                guard let imageId = dictionary[APIConstants.Response.identifier] as? String else { self.gotAnError(reason: "Could not get image ID"); return}
                 
                 let imageURL = URL(string: imageUrlString)
                 if let imageData = try? Data(contentsOf: imageURL!)
@@ -134,7 +146,7 @@ class APIService: NSObject
                     }
                 }
                 else {
-                    print("Seems that no image exists at this URL!")
+                    self.gotAnError(reason: "Seems that no image exists at this URL!")
                 }
             }
         }

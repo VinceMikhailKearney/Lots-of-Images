@@ -31,10 +31,11 @@ class TableViewController: UIViewController, APIServiceDelegate
         progressHUD?.label.text = "Downloading images"
     }
     
-    func cannotDownloadToast() {
+    func showToast(withText text : String) {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.mode = .text
-        hud.label.text = "No ID entered"
+        hud.label.text = text
+        hud.label.numberOfLines = 0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             MBProgressHUD.hide(for: self.view, animated: true)
@@ -58,11 +59,17 @@ class TableViewController: UIViewController, APIServiceDelegate
         progressHUD?.detailsLabel.text = "\(imageCount)/\(APIService.totalImageCount ?? 0)"
     }
     
+    func downloadError(reason: String) {
+        self.view.isUserInteractionEnabled = true
+        MBProgressHUD.hide(for: self.view, animated: true)
+        self.showToast(withText: reason)
+    }
+    
     // MARK: Actions
     @IBAction func downloadImage(_ sender : UIButton)
     {
         print("Pressed download image button")
-        guard (self.textField.text?.characters.count)! > 0 else { self.cannotDownloadToast(); return }
+        guard (self.textField.text?.characters.count)! > 0 else { self.showToast(withText: "No ID Entered"); return }
         self.displayToast()
         APIService.sharedInstance().getGalleryInfo(withId: self.textField.text!)
         self.view.isUserInteractionEnabled = false
