@@ -82,7 +82,7 @@
             </objects>
             <point key="canvasLocation" x="420" y="94.902548725637189"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Lots of Images-->
         <scene sceneID="REn-lC-WLK">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="rnm-Nw-csc" customClass="TableViewController" customModule="Lots_of_Images" customModuleProvider="target" sceneMemberID="viewController">
@@ -147,7 +147,7 @@
                             <constraint firstItem="fHD-Yf-J7f" firstAttribute="leading" secondItem="J9J-Ah-ysB" secondAttribute="leadingMargin" id="sTo-Tt-mBi"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="VZR-w1-lPT"/>
+                    <navigationItem key="navigationItem" title="Lots of Images" id="VZR-w1-lPT"/>
                     <connections>
                         <outlet property="downloadImageButton" destination="6Gc-uR-w14" id="eRr-zN-Rpu"/>
                         <outlet property="tableView" destination="m8n-jh-vbr" id="CoE-cb-Mvu"/>
