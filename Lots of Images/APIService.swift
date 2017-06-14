@@ -8,6 +8,15 @@
 
 import UIKit
 
+extension Dictionary
+{
+    mutating func addEntriesFrom(_ other : Dictionary) {
+        for (key,value) in other {
+            self.updateValue(value, forKey:key)
+        }
+    }
+}
+
 public protocol APIServiceDelegate {
     func downloadedImages()
     func updateToastProgress(_ progress : Float, imageCount : Int)
@@ -35,10 +44,8 @@ class APIService: NSObject
         delegates = MulticastDelegate()
     }
     
-    private func runDataTask(withUrl url : URL) -> [String : AnyObject]?
+    private func runDataTask(withUrl url : URL, completion: @escaping (_ result : Dictionary<String, AnyObject>?) -> Void)
     {
-        var json : [String : AnyObject]?
-        
         let request : URLRequest = URLRequest(url: url)
         /// Task
         let task = URLSession.shared.dataTask(with: request)
@@ -63,70 +70,72 @@ class APIService: NSObject
             
             guard let status = parsed["stat"] as? String, status == "ok" else { print("Flickr response is NOT ok"); return }
             
-            json = parsed
+            completion(parsed)
         }
         
         task.resume()
         /// Task
-        
-        return json
     }
     
     public func getGalleryInfo(withId id : String)
     {
-        let json = self.runDataTask(withUrl: APIConstants.getGalleryInfoUrl(withId: id))
-        
-        guard let gallery = json?["gallery"] as? [String : AnyObject], let galleryTitle = gallery["title"]?["_content"] as? String else {
-            print("Did not get gallery title")
-            return
+        self.runDataTask(withUrl: APIConstants.getGalleryInfoUrl(withId: id))
+        { (result) in
+            
+            guard let gallery = result?["gallery"] as? [String : AnyObject], let galleryTitle = gallery["title"]?["_content"] as? String else {
+                print("Did not get gallery title")
+                return
+            }
+            
+            Galleries.sharedInstance().addGallery(Gallery.init(name: galleryTitle, identifier: id))
+            APIService.sharedInstance().getImagesForGallery(withId: id)
         }
-        
-        Galleries.sharedInstance().addGallery(Gallery.init(name: galleryTitle, identifier: id))
-        APIService.sharedInstance().getImagesForGallery(withId: id)
     }
     
     public func getImagesForGallery(withId : String)
     {
-        let json = self.runDataTask(withUrl: APIConstants.getGalleryPhotosUrl(withId: withId))
+        self.runDataTask(withUrl: APIConstants.getGalleryPhotosUrl(withId: withId))
+        { (result) in
             
-        // or [[String : AnyObject]]
-        guard let photosDictionary = json?["photos"] as? [String : AnyObject], let photosArray = photosDictionary["photo"] as? Array<Dictionary<String, AnyObject>> else {
-            print("Did not find the keys in the dictionary")
-            return
-        }
-        
-        guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
-        
-        let gallery : Gallery = Galleries.sharedInstance().getGallery(withId: withId)!
-        gallery.totalImageCount = totalImageCount
-        APIService.totalImageCount = totalImageCount
-        
-        print("Total images for gallery (\(gallery.name)) are -> \(gallery.totalImageCount)")
-        let percent = (1.00 / Float(gallery.totalImageCount))
-        print("Each image is \(percent * 100)%")
-        
-        var totalPercent = percent
-        for dictionary in photosArray
-        {
-            guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
-            
-            guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
-            
-            let imageURL = URL(string: imageUrlString)
-            if let imageData = try? Data(contentsOf: imageURL!)
-            {
-                let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
-                gallery.addPhoto(newPhoto)
-                
-                DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent), imageCount: Int(totalPercent/percent)) } }
-                totalPercent += percent
-                
-                if gallery.photoCount() == (photosDictionary["total"] as? Int) {
-                    DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
-                }
+            // or [[String : AnyObject]]
+            guard let photosDictionary = result?["photos"] as? [String : AnyObject], let photosArray = photosDictionary["photo"] as? Array<Dictionary<String, AnyObject>> else {
+                print("Did not find the keys in the dictionary")
+                return
             }
-            else {
-                print("Seems that no image exists at this URL!")
+            
+            guard let totalImageCount = photosDictionary["total"] as? Int else { print("Did not get a Total Count"); return }
+            
+            let gallery : Gallery = Galleries.sharedInstance().getGallery(withId: withId)!
+            gallery.totalImageCount = totalImageCount
+            APIService.totalImageCount = totalImageCount
+            
+            print("Total images for gallery (\(gallery.name)) are -> \(gallery.totalImageCount)")
+            let percent = (1.00 / Float(gallery.totalImageCount))
+            print("Each image is \(percent * 100)%")
+            
+            var totalPercent = percent
+            for dictionary in photosArray
+            {
+                guard let imageUrlString = dictionary[APIConstants.Response.imageURL] as? String else { print("Could not find image url string"); return }
+                
+                guard let imageTitle = dictionary[APIConstants.Response.title] as? String else { print("Could not find image title"); return }
+                
+                let imageURL = URL(string: imageUrlString)
+                if let imageData = try? Data(contentsOf: imageURL!)
+                {
+                    let newPhoto : Photo = Photo.init(withData: imageData, title: imageTitle)
+                    gallery.addPhoto(newPhoto)
+                    
+                    DispatchQueue.main.sync { self.delegates?.invokeDelegates { delegates in delegates.updateToastProgress(Float(totalPercent), imageCount: Int(totalPercent/percent)) } }
+                    totalPercent += percent
+                    
+                    if gallery.photoCount() == (photosDictionary["total"] as? Int) {
+                        DispatchQueue.main.async { self.delegates?.invokeDelegates { delegates in delegates.downloadedImages() } }
+                    }
+                }
+                else {
+                    print("Seems that no image exists at this URL!")
+                }
             }
         }
     }
