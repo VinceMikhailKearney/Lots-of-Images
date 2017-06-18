@@ -21,6 +21,7 @@ class TableViewController: UIViewController, APIServiceDelegate
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.downloadImageButton.layer.cornerRadius = 5
         APIService.sharedInstance().delegates?.addDelegate(self)
         self.galleries = Galleries.sharedInstance().list
     }

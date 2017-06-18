@@ -134,10 +134,13 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Gc-uR-w14">
                                 <rect key="frame" x="16" y="140" width="160" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.69019607839999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="FkP-Ln-8cg"/>
                                 </constraints>
-                                <state key="normal" title="Download Gallery"/>
+                                <state key="normal" title="Download Gallery">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="downloadGallery:" destination="rnm-Nw-csc" eventType="touchUpInside" id="KtY-XL-Ch3"/>
                                 </connections>
