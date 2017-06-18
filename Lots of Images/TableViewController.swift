@@ -71,10 +71,12 @@ class TableViewController: UIViewController, APIServiceDelegate
     {
         print("Pressed download image button")
         guard (self.textField.text?.characters.count)! > 0 else { self.showToast(withText: "No ID Entered"); return }
-        self.displayToast()
-        APIService.sharedInstance().getGalleryInfo(withId: self.textField.text!)
+        guard Galleries.sharedInstance().checkIfGalleryExists(self.textField.text!) == false else { self.showToast(withText: "Gallery ID already download"); return }
+        
         self.view.isUserInteractionEnabled = false
         self.textField.resignFirstResponder()
+        self.displayToast()
+        APIService.sharedInstance().getGalleryInfo(withId: self.textField.text!)
     }
 
     // MARK: - Navigation

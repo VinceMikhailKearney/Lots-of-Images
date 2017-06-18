@@ -14,7 +14,8 @@ class Galleries: NSObject
     public var list : Array<Gallery>
     private static var galleries : Galleries?
     
-    public static func sharedInstance() -> Galleries {
+    public static func sharedInstance() -> Galleries
+    {
         if self.galleries == nil {
             self.galleries = Galleries()
         }
@@ -26,13 +27,9 @@ class Galleries: NSObject
         super.init()
     }
     
-    public func addGallery(_ gallery : Gallery)
-    {
-        var filtered = Array<Gallery>()
-        filtered = self.list.filter { $0.identifier == gallery.identifier }
-        if filtered.count == 0 {
-            self.list.append(gallery)
-        }
+    public func addGallery(_ gallery : Gallery) {
+        guard checkIfGalleryExists(gallery.identifier) == false else { return }
+        self.list.append(gallery)
     }
     
     public func getGallery(withId id : String) -> Gallery?
@@ -44,5 +41,9 @@ class Galleries: NSObject
         }
         
         return nil
+    }
+    
+    public func checkIfGalleryExists(_ galleryId : String) -> Bool {
+        return self.list.contains { $0.identifier == galleryId }
     }
 }
