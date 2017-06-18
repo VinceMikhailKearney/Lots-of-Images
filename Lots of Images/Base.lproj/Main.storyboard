@@ -127,7 +127,7 @@
                                 </constraints>
                                 <state key="normal" title="Download Gallery"/>
                                 <connections>
-                                    <action selector="downloadImage:" destination="rnm-Nw-csc" eventType="touchUpInside" id="oEZ-oX-7eU"/>
+                                    <action selector="downloadGallery:" destination="rnm-Nw-csc" eventType="touchUpInside" id="KtY-XL-Ch3"/>
                                 </connections>
                             </button>
                         </subviews>

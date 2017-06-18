@@ -31,7 +31,8 @@ class TableViewController: UIViewController, APIServiceDelegate
         progressHUD?.label.text = "Downloading images"
     }
     
-    func showToast(withText text : String) {
+    func showToast(withText text : String)
+    {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.mode = .text
         hud.label.text = text
@@ -66,7 +67,7 @@ class TableViewController: UIViewController, APIServiceDelegate
     }
     
     // MARK: Actions
-    @IBAction func downloadImage(_ sender : UIButton)
+    @IBAction func downloadGallery(_ sender : UIButton)
     {
         print("Pressed download image button")
         guard (self.textField.text?.characters.count)! > 0 else { self.showToast(withText: "No ID Entered"); return }

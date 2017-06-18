@@ -79,7 +79,7 @@ class APIService: NSObject
                 return
             }
             
-            failure = "Flickr response is NOT ok"
+            failure = "Flickr response states a failure"
             guard let status = parsed["stat"] as? String, status == "ok" else { self.gotAnError(reason: failure); return }
             
             completion(parsed)
