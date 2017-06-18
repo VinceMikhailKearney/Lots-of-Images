@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController
 {
     // MARK: Properties
+    @IBOutlet weak var galleryTitle : UILabel!
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var imageTitle : UILabel!
     @IBOutlet weak var nextImageButton : UIButton!
@@ -23,26 +24,26 @@ class ViewController: UIViewController
         super.viewDidLoad()
         self.imagePosition = 0
         self.imageView.contentMode = .scaleAspectFit
-        self.updateImage((gallery?.images()[self.imagePosition!])!)
+        self.galleryTitle.text = "Gallery Title: \(self.gallery?.name ?? "No title provided")"
+        self.updateView(withPhoto: (gallery?.images()[self.imagePosition!])!)
     }
     
-    func updateImage(_ image : Photo) {
-        self.imageView.image = UIImage(data: image.imageData!)
-        self.imageTitle.text = image.imageTitle!
+    func updateView(withPhoto photo : Photo) {
+        self.imageView.image = UIImage(data: photo.imageData!)
+        self.imageTitle.text = "Photo Title: \(photo.imageTitle!)"
     }
     
     // MARK: Actions
-    
     @IBAction func nextImageFromGallery(_ sender : UIButton) {
         self.imagePosition? += 1
         if self.imagePosition == gallery?.images().count { self.imagePosition = 0 }
-        updateImage((gallery?.images()[self.imagePosition!])!)
+        self.updateView(withPhoto: (gallery?.images()[self.imagePosition!])!)
     }
     
     @IBAction func previousImageFromGallery(_ sender : UIButton) {
         self.imagePosition? -= 1
         if self.imagePosition == -1 { self.imagePosition = (gallery?.images().count)! - 1 }
-        updateImage((gallery?.images()[self.imagePosition!])!)
+        self.updateView(withPhoto: (gallery?.images()[self.imagePosition!])!)
     }
 }
 

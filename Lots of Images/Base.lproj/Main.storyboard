@@ -23,10 +23,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lma-rZ-CMv">
-                                <rect key="frame" x="0.0" y="116" width="375" height="479"/>
+                                <rect key="frame" x="0.0" y="122.5" width="375" height="472.5"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fea-Lr-AZr">
-                                <rect key="frame" x="16" y="64" width="343" height="35"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="241" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fea-Lr-AZr">
+                                <rect key="frame" x="16" y="64" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -53,26 +53,35 @@
                                     <action selector="previousImageFromGallery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bkF-6k-et3"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tr9-Mw-Qbe">
+                                <rect key="frame" x="16" y="92" width="343" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="tr9-Mw-Qbe" secondAttribute="leading" id="1Te-A0-ZnU"/>
                             <constraint firstAttribute="trailing" secondItem="B7K-0t-bzl" secondAttribute="trailing" constant="16" id="69h-JO-xpl"/>
-                            <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="fea-Lr-AZr" secondAttribute="bottom" constant="17" id="9nk-jq-rbu"/>
                             <constraint firstItem="uMa-EM-9o3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="Gyh-KV-UjK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tr9-Mw-Qbe" secondAttribute="trailing" id="J2r-by-RvN"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Ui0-qJ-Pev"/>
                             <constraint firstAttribute="trailing" secondItem="lma-rZ-CMv" secondAttribute="trailing" id="ZIZ-k3-PJg"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uMa-EM-9o3" secondAttribute="bottom" constant="5" id="cXj-Y0-EdY"/>
-                            <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="52" id="e8n-7p-hFp"/>
+                            <constraint firstItem="lma-rZ-CMv" firstAttribute="top" secondItem="tr9-Mw-Qbe" secondAttribute="bottom" constant="10" id="e3M-jP-1Cd"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lma-rZ-CMv" secondAttribute="bottom" constant="72" id="kn1-cf-prX"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="oYR-4h-iX4"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="B7K-0t-bzl" secondAttribute="bottom" constant="5" id="qDe-4r-riR"/>
                             <constraint firstItem="fea-Lr-AZr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="vPX-DU-83m"/>
+                            <constraint firstItem="tr9-Mw-Qbe" firstAttribute="top" secondItem="fea-Lr-AZr" secondAttribute="bottom" constant="8" id="xRh-87-ptR"/>
                             <constraint firstItem="lma-rZ-CMv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="zI8-Rt-7lJ"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="imageTitle" destination="fea-Lr-AZr" id="9Ba-vt-bxf"/>
+                        <outlet property="galleryTitle" destination="fea-Lr-AZr" id="6vh-s6-peX"/>
+                        <outlet property="imageTitle" destination="tr9-Mw-Qbe" id="4Xw-by-zyd"/>
                         <outlet property="imageView" destination="lma-rZ-CMv" id="1Uu-bh-DqN"/>
                         <outlet property="nextImageButton" destination="B7K-0t-bzl" id="oPu-Mi-OOx"/>
                         <outlet property="previousImageButton" destination="uMa-EM-9o3" id="VRr-k9-Hmb"/>
@@ -108,8 +117,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Gallery ID to add more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHD-Yf-J7f">
-                                <rect key="frame" x="16" y="74" width="343" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Gallery ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHD-Yf-J7f">
+                                <rect key="frame" x="16" y="74" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
