@@ -28,7 +28,7 @@ class TableViewController: UIViewController, APIServiceDelegate
     
     func displayToast() {
         progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-        progressHUD?.mode = .annularDeterminate
+        progressHUD?.mode = .indeterminate
         progressHUD?.label.text = "Downloading images"
     }
     
@@ -56,7 +56,7 @@ class TableViewController: UIViewController, APIServiceDelegate
     }
     
     func updateToastProgress(_ progress: Float, imageCount : Int) {
-        print("Should be updating the progress of the HUD. This is the progress -> \(progress)")
+        progressHUD?.mode = .annularDeterminate
         progressHUD?.progress = progress
         progressHUD?.detailsLabel.text = "\(imageCount)/\(APIService.totalImageCount ?? 0)"
     }
