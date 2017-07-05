@@ -123,11 +123,9 @@ class APIService: NSObject
             guard let totalImageCount = photosDictionary["total"] as? Int else { self.gotAnError(reason: "Did not get a Total Count"); return }
             
             let gallery : Gallery = Galleries.sharedInstance().getGallery(withId: withId)!
-            gallery.totalImageCount = totalImageCount
             APIService.totalImageCount = totalImageCount
             
-            print("Total images for gallery (\(gallery.name)) are -> \(gallery.totalImageCount)")
-            let percent = (1.00 / Float(gallery.totalImageCount))
+            let percent = (1.00 / Float(APIService.totalImageCount!))
             print("Each image is \(percent * 100)%")
             
             var totalPercent = percent

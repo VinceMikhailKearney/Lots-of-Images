@@ -13,14 +13,12 @@ class Gallery: NSObject
     // MARK: Properties
     public var name : String
     public var identifier : String
-    public var totalImageCount : Int
     private var photoList : Array<Photo>
     
     override init()
     {
         self.name = ""
         self.identifier = ""
-        self.totalImageCount = 0
         self.photoList = Array<Photo>()
     
         super.init()
